@@ -343,15 +343,15 @@ def export_moods_csv(days=30):
 # ════════════════════════════════════════════════════════════════
 
 WELCOME = (
-    f"Привет\\! Я *{BOT_NAME}* 🤍\n\n"
+    f"Привет! Я *{BOT_NAME}* 🤍\n\n"
     "Помогу отслеживать уровень стресса и находить баланс — "
-    "каждый день, в твоём темпе\\.\n\n"
+    "каждый день, в твоём темпе.\n\n"
     "Сначала пара вопросов для старта 👇"
 )
 
 ASK_GENDER = (
-    "👤 Укажи свой пол — это нужно только для анонимной статистики\\.\n"
-    "_Никто кроме тебя не увидит эти данные\\._"
+    "👤 Укажи свой пол — это нужно только для анонимной статистики.\n"
+    "_Никто кроме тебя не увидит эти данные._"
 )
 
 GENDER_SAVED   = "Сохранил ✅\n\nХочешь прямо сейчас пройти пробный вечерний опрос?"
@@ -361,12 +361,12 @@ ASK_SURVEY_TIME = (
 )
 ASK_MORNING_TIME = (
     "🌅 Хочешь получать утреннюю карточку с мотивацией?\n\n"
-    "Напиши время в формате *ЧЧ:ММ* или `/skip` чтобы пропустить\\."
+    "Напиши время в формате *ЧЧ:ММ* или `/skip` чтобы пропустить."
 )
-SETUP_DONE   = "🎉 Всё готово\\! Ты в игре\\.\n\nПользуйся меню ниже 👇"
-TIME_INVALID = "⚠️ Неверный формат\\. Попробуй ещё раз, например: `20:30`"
+SETUP_DONE   = "🎉 Всё готово! Ты в игре.\n\nПользуйся меню ниже 👇"
+TIME_INVALID = "⚠️ Неверный формат. Попробуй ещё раз, например: `20:30`"
 TIME_SAVED   = "✅ Время сохранено: *{time}*"
-TIME_MORNING_OFF = "✅ Утренняя рассылка отключена\\."
+TIME_MORNING_OFF = "✅ Утренняя рассылка отключена."
 TIME_SETTINGS    = (
     "⏰ *Настройка времени*\n\n"
     "🌆 Вечерний опрос: *{survey_time}*\n"
@@ -381,46 +381,46 @@ SURVEY_QUESTIONS = [
     "💛 *Вопрос 5 из 8 — Эмоциональный фон*\n\nНасколько сильными были негативные эмоции сегодня?\n\n_1 — совсем нет  |  5 — очень интенсивные_",
     "🌙 *Вопрос 6 из 8 — Качество сна*\n\nКак ты оцениваешь свой прошлый сон?\n\n_1 — отлично  |  5 — очень плохо_",
     "💬 *Вопрос 7 из 8 — Готовность к общению*\n\nНасколько тебе сегодня хотелось избегать людей?\n\n_1 — совсем нет  |  5 — очень сильно_",
-    "🎯 *Вопрос 8 из 8 — Ощущение контроля*\n\nНасколько ты чувствовал\\(\\-а\\) себя беспомощным\\(\\-ой\\) сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
+    "🎯 *Вопрос 8 из 8 — Ощущение контроля*\n\nНасколько ты чувствовал(-а) себя беспомощным(-ой) сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
 ]
 EXPRESS_QUESTIONS = SURVEY_QUESTIONS[:4]
 
-RESULT_GREEN  = "🟢 *Зелёная зона* — Баланс\\!\n\nКрасавчик\\! Ты в хорошем состоянии сегодня 🙌\nСохраняй этот ритм — ты справляешься\\.\n\n_{score} баллов из 40_"
-RESULT_YELLOW = "🟡 *Жёлтая зона* — Умеренный стресс\n\nЧувствуется нагрузка, но ты держишься 💪\nПопробуй технику дыхания — 5 минут могут изменить вечер\\.\n\n_{score} баллов из 40_"
-RESULT_RED    = "🔴 *Красная зона* — Высокий стресс\n\nЗвучит тяжело\\. Это нормально — бывает\\.\nПопробуй прямо сейчас: 🧘 *Дыхательная гимнастика*\\.\nЕсли так несколько дней — поговори с кем\\-то, кому доверяешь\\.\n\n_{score} баллов из 40_"
-POINTS_ADDED  = "\n\n✨ *\\+{pts} очков* начислено\\!"
-STREAK_BONUS  = "🔥 Серия {streak} дней подряд\\! Бонус *\\+10 очков*"
+RESULT_GREEN  = "🟢 *Зелёная зона* — Баланс!\n\nКрасавчик! Ты в хорошем состоянии сегодня 🙌\nСохраняй этот ритм — ты справляешься.\n\n_{score} баллов из 40_"
+RESULT_YELLOW = "🟡 *Жёлтая зона* — Умеренный стресс\n\nЧувствуется нагрузка, но ты держишься 💪\nПопробуй технику дыхания — 5 минут могут изменить вечер.\n\n_{score} баллов из 40_"
+RESULT_RED    = "🔴 *Красная зона* — Высокий стресс\n\nЗвучит тяжело. Это нормально — бывает.\nПопробуй прямо сейчас: 🧘 *Дыхательная гимнастика*.\nЕсли так несколько дней — поговори с кем-то, кому доверяешь.\n\n_{score} баллов из 40_"
+POINTS_ADDED  = "\n\n✨ *+{pts} очков* начислено!"
+STREAK_BONUS  = "🔥 Серия {streak} дней подряд! Бонус *+10 очков*"
 
-EXPRESS_START   = "⚡ *Экспресс\\-тест* — 4 быстрых вопроса\n\nЗаймёт меньше минуты\\. Поехали 👇"
-EXPRESS_RESULT  = "⚡ *Результат экспресс\\-теста*\n\nСумма: *{score} из 20*\nСредний балл: *{avg}*\n\n_{hint}_\n\n✨ *\\+10 очков* начислено\\!"
-EXPRESS_COOLDOWN = "⏳ Экспресс\\-тест можно проходить *раз в час*\\.\nСледующий доступен через *{minutes} мин\\.*"
+EXPRESS_START   = "⚡ *Экспресс-тест* — 4 быстрых вопроса\n\nЗаймёт меньше минуты. Поехали 👇"
+EXPRESS_RESULT  = "⚡ *Результат экспресс-теста*\n\nСумма: *{score} из 20*\nСредний балл: *{avg}*\n\n_{hint}_\n\n✨ *+10 очков* начислено!"
+EXPRESS_COOLDOWN = "⏳ Экспресс-тест можно проходить *раз в час*.\nСледующий доступен через *{minutes} мин.*"
 
 BREATHING_MENU = "🧘 *Дыхательная гимнастика*\n\nВыбери упражнение — и дай себе пару минут тишины 🌿"
 BREATHING_TEXTS = {
-    "breath_square":    "🔲 *Квадратное дыхание*\n\nПростая и мощная техника для быстрого снятия напряжения\\.\n\n1️⃣ Вдох — *4 секунды*\n2️⃣ Задержи дыхание — *4 секунды*\n3️⃣ Выдох — *4 секунды*\n4️⃣ Задержи дыхание — *4 секунды*\n\nПовтори 4–6 раз\\. Концентрируйся только на счёте 🎯",
-    "breath_478":       "4️⃣ *Дыхание 4\\-7\\-8*\n\nМетод доктора Эндрю Вейла — расслабляет нервную систему за минуты\\.\n\n1️⃣ Вдох через нос — *4 секунды*\n2️⃣ Задержи дыхание — *7 секунд*\n3️⃣ Выдох через рот со звуком — *8 секунд*\n\nПовтори 3–4 раза\\. Можно делать лёжа 🛏",
-    "breath_diaphragm": "🫁 *Диафрагмальное дыхание*\n\nСамый естественный способ дышать — как в детстве\\.\n\n1️⃣ Положи руку на живот\n2️⃣ Вдохни носом — *живот поднимается*, грудь почти не двигается\n3️⃣ Выдыхай медленно через рот — *живот опускается*\n\n5 минут такого дыхания снижают кортизол 📉",
-    "breath_relax":     "😌 *Расслабляющее дыхание*\n\nВыдох длиннее вдоха — это сигнал телу «всё хорошо»\\.\n\n1️⃣ Вдох — *4 секунды*\n2️⃣ Выдох — *6–8 секунд*\n\nПовтори 8–10 раз\\. Хорошо работает перед сном 🌙",
-    "breath_nostril":   "👃 *Дыхание через ноздри \\(Нади Шодхана\\)*\n\nБалансирует левое и правое полушария мозга\\.\n\n1️⃣ Закрой правую ноздрю большим пальцем\n2️⃣ Вдохни через левую — *4 секунды*\n3️⃣ Закрой обе, задержи — *4 секунды*\n4️⃣ Открой правую, выдохни — *4 секунды*\n5️⃣ Вдохни через правую — *4 секунды*, затем смени ноздрю\n\n5 циклов \\= полная перезагрузка 🔄",
+    "breath_square":    "🔲 *Квадратное дыхание*\n\nПростая и мощная техника для быстрого снятия напряжения.\n\n1️⃣ Вдох — *4 секунды*\n2️⃣ Задержи дыхание — *4 секунды*\n3️⃣ Выдох — *4 секунды*\n4️⃣ Задержи дыхание — *4 секунды*\n\nПовтори 4–6 раз. Концентрируйся только на счёте 🎯",
+    "breath_478":       "4️⃣ *Дыхание 4-7-8*\n\nМетод доктора Эндрю Вейла — расслабляет нервную систему за минуты.\n\n1️⃣ Вдох через нос — *4 секунды*\n2️⃣ Задержи дыхание — *7 секунд*\n3️⃣ Выдох через рот со звуком — *8 секунд*\n\nПовтори 3–4 раза. Можно делать лёжа 🛏",
+    "breath_diaphragm": "🫁 *Диафрагмальное дыхание*\n\nСамый естественный способ дышать — как в детстве.\n\n1️⃣ Положи руку на живот\n2️⃣ Вдохни носом — *живот поднимается*, грудь почти не двигается\n3️⃣ Выдыхай медленно через рот — *живот опускается*\n\n5 минут такого дыхания снижают кортизол 📉",
+    "breath_relax":     "😌 *Расслабляющее дыхание*\n\nВыдох длиннее вдоха — это сигнал телу «всё хорошо».\n\n1️⃣ Вдох — *4 секунды*\n2️⃣ Выдох — *6–8 секунд*\n\nПовтори 8–10 раз. Хорошо работает перед сном 🌙",
+    "breath_nostril":   "👃 *Дыхание через ноздри (Нади Шодхана)*\n\nБалансирует левое и правое полушария мозга.\n\n1️⃣ Закрой правую ноздрю большим пальцем\n2️⃣ Вдохни через левую — *4 секунды*\n3️⃣ Закрой обе, задержи — *4 секунды*\n4️⃣ Открой правую, выдохни — *4 секунды*\n5️⃣ Вдохни через правую — *4 секунды*, затем смени ноздрю\n\n5 циклов = полная перезагрузка 🔄",
 }
-BREATHING_COOLDOWN = "🧘 Описание доступно, но очки получишь через *{minutes} мин\\.*\n\n{text}"
-BREATHING_POINTS   = "\n\n✨ *\\+{pts} очков* за практику\\!"
+BREATHING_COOLDOWN = "🧘 Описание доступно, но очки получишь через *{minutes} мин.*\n\n{text}"
+BREATHING_POINTS   = "\n\n✨ *+{pts} очков* за практику!"
 
 STATS_TEMPLATE = (
     "📊 *Твоя статистика*\n\n"
     "🏆 Очков: *{points}*\n"
-    "🔥 Серия: *{streak} дн\\.*\n\n"
+    "🔥 Серия: *{streak} дн.*\n\n"
     "📋 *Последние опросы:*\n{survey_list}\n\n"
-    "⚡ *Последние экспресс\\-тесты:*\n{express_list}"
+    "⚡ *Последние экспресс-тесты:*\n{express_list}"
 )
 STATS_EMPTY = "_пока нет данных_"
 ZONE_ICONS  = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
 
 TASKS_TEMPLATE = (
     "📋 *Задания на сегодня*\n\n"
-    "{survey_status} Вечерний опрос           \\(\\+15 очков\\)\n"
-    "{breath_status} Дыхательная гимнастика   \\(\\+5 очков\\)\n"
-    "{express_status} Экспресс\\-тест          \\(\\+10 очков\\)\n\n"
+    "{survey_status} Вечерний опрос           (+15 очков)\n"
+    "{breath_status} Дыхательная гимнастика   (+5 очков)\n"
+    "{express_status} Экспресс-тест          (+10 очков)\n\n"
     "─────────────────\n"
     "🏆 Всего очков: *{points}*"
 )
@@ -438,12 +438,12 @@ MOON_PHASES = {
     "waning_crescent": ("🌘", "Убывающий серп"),
 }
 MOON_CAPTION     = "{icon} *{name}*\n\n_{date}_"
-MOON_DISCLAIMER  = "\n\n⚠️ _Напомним: научных доказательств влияния фазы луны на уровень стресса не существует\\. Это просто красиво 🌌_"
+MOON_DISCLAIMER  = "\n\n⚠️ _Напомним: научных доказательств влияния фазы луны на уровень стресса не существует. Это просто красиво 🌌_"
 
 ABOUT_BOT = (
     f"ℹ️ *{BOT_NAME}*  `v{VERSION}`\n\n"
     "Инструмент для ежедневного мониторинга стресса "
-    "и формирования навыков саморегуляции\\.\n\n"
+    "и формирования навыков саморегуляции.\n\n"
     "🎯 *Как пользоваться:*\n"
     "• Проходи вечерний опрос каждый день\n"
     "• Делай дыхательные практики при напряжении\n"
@@ -451,7 +451,7 @@ ABOUT_BOT = (
     "• Читай факты о стрессе в 13:30\n\n"
     "🏆 *Система очков:*\n"
     "• Вечерний опрос — 15 очков\n"
-    "• Экспресс\\-тест — 10 очков\n"
+    "• Экспресс-тест — 10 очков\n"
     "• Дыхательная практика — 5 очков\n"
     "• Бонус за серию — 10 очков\n\n"
     "_Разработан в рамках конференции «Первые шаги в науку» 🔬_"
@@ -459,19 +459,19 @@ ABOUT_BOT = (
 PRACTICES_SOON = (
     "🧠 *Практики*\n\n"
     "Этот раздел находится в разработке ✨\n"
-    "Скоро здесь появятся медитации, техники заземления и многое другое\\.\n\n"
-    "_Следи за обновлениями\\!_"
+    "Скоро здесь появятся медитации, техники заземления и многое другое.\n\n"
+    "_Следи за обновлениями!_"
 )
-EVENING_PUSH    = "🌆 *Время подвести итоги дня\\!*\n\nПройди короткий опрос — это займёт меньше 2 минут\\. Нажми на кнопку ниже 👇"
+EVENING_PUSH    = "🌆 *Время подвести итоги дня!*\n\nПройди короткий опрос — это займёт меньше 2 минут. Нажми на кнопку ниже 👇"
 SURVEY_START_BTN = "📝 Начать опрос"
 FACT_PREFIX      = "🧠 *Факт о стрессе*\n\n"
-ADMIN_TRIGGER    = "⚠️ *Триггер\\!*\nПользователь `{uid}` \\({name}\\) поставил *5* в вопросе {q}\\.\nДата: {dt}"
-ADMIN_RED        = "🚨 *Длительный стресс\\!*\nПользователь `{uid}` \\({name}\\) — *{days} дня подряд* в красной зоне\\."
+ADMIN_TRIGGER    = "⚠️ *Триггер!*\nПользователь `{uid}` ({name}) поставил *5* в вопросе {q}.\nДата: {dt}"
+ADMIN_RED        = "🚨 *Длительный стресс!*\nПользователь `{uid}` ({name}) — *{days} дня подряд* в красной зоне."
 
 # группы главного меню
-GROUP_STATS_TEXT  = "📊 *Статистика*\n\nЗдесь ты можешь посмотреть свои результаты, задания на сегодня и быстро проверить состояние прямо сейчас\\."
+GROUP_STATS_TEXT  = "📊 *Статистика*\n\nЗдесь ты можешь посмотреть свои результаты, задания на сегодня и быстро проверить состояние прямо сейчас."
 GROUP_RELAX_TEXT  = "🌿 *Практики и релакс*\n\nДыхательные упражнения, научно обоснованные практики и немного астрономии 🌙"
-GROUP_INFO_TEXT   = "ℹ️ *О боте*\n\nИнформация о боте и настройка времени рассылок\\."
+GROUP_INFO_TEXT   = "ℹ️ *О боте*\n\nИнформация о боте и настройка времени рассылок."
 
 
 # ════════════════════════════════════════════════════════════════
@@ -689,15 +689,15 @@ router = Router()
 
 @router.message(F.text == BTN_STATS_GROUP)
 async def open_stats_group(msg: Message):
-    await msg.answer(GROUP_STATS_TEXT, parse_mode="MarkdownV2", reply_markup=stats_submenu())
+    await msg.answer(GROUP_STATS_TEXT, parse_mode="Markdown", reply_markup=stats_submenu())
 
 @router.message(F.text == BTN_RELAX_GROUP)
 async def open_relax_group(msg: Message):
-    await msg.answer(GROUP_RELAX_TEXT, parse_mode="MarkdownV2", reply_markup=relax_submenu())
+    await msg.answer(GROUP_RELAX_TEXT, parse_mode="Markdown", reply_markup=relax_submenu())
 
 @router.message(F.text == BTN_INFO_GROUP)
 async def open_info_group(msg: Message):
-    await msg.answer(GROUP_INFO_TEXT, parse_mode="MarkdownV2", reply_markup=info_submenu())
+    await msg.answer(GROUP_INFO_TEXT, parse_mode="Markdown", reply_markup=info_submenu())
 
 @router.message(F.text == BTN_BACK)
 async def go_back(msg: Message):
@@ -712,20 +712,20 @@ async def cmd_start(msg: Message, state: FSMContext):
     existing = get_user(msg.from_user.id)
     if existing and existing["gender"]:
         await msg.answer(
-            f"С возвращением, {msg.from_user.first_name}\\! 👋\nВсё готово — пользуйся меню 👇",
-            parse_mode="MarkdownV2", reply_markup=main_menu(),
+            f"С возвращением, {msg.from_user.first_name}! 👋\nВсё готово — пользуйся меню 👇",
+            parse_mode="Markdown", reply_markup=main_menu(),
         )
         await state.clear()
         return
-    await msg.answer(WELCOME, parse_mode="MarkdownV2")
-    await msg.answer(ASK_GENDER, parse_mode="MarkdownV2", reply_markup=gender_kb())
+    await msg.answer(WELCOME, parse_mode="Markdown")
+    await msg.answer(ASK_GENDER, parse_mode="Markdown", reply_markup=gender_kb())
     await state.set_state(RegisterStates.waiting_gender)
 
 @router.callback_query(RegisterStates.waiting_gender, F.data.startswith("gender:"))
 async def cb_gender(call: CallbackQuery, state: FSMContext):
     set_gender(call.from_user.id, call.data.split(":")[1])
     await call.message.edit_reply_markup()
-    await call.message.answer(GENDER_SAVED, parse_mode="MarkdownV2", reply_markup=trial_kb())
+    await call.message.answer(GENDER_SAVED, parse_mode="Markdown", reply_markup=trial_kb())
     await state.set_state(RegisterStates.waiting_trial)
     await call.answer()
 
@@ -733,7 +733,7 @@ async def cb_gender(call: CallbackQuery, state: FSMContext):
 async def cb_trial(call: CallbackQuery, state: FSMContext):
     await call.message.edit_reply_markup()
     await state.update_data(run_trial=(call.data.split(":")[1] == "yes"))
-    await call.message.answer(ASK_SURVEY_TIME, parse_mode="MarkdownV2")
+    await call.message.answer(ASK_SURVEY_TIME, parse_mode="Markdown")
     await state.set_state(RegisterStates.waiting_survey_time)
     await call.answer()
 
@@ -741,10 +741,10 @@ async def cb_trial(call: CallbackQuery, state: FSMContext):
 async def reg_survey_time(msg: Message, state: FSMContext):
     t = normalize_time(msg.text)
     if not t:
-        await msg.answer(TIME_INVALID, parse_mode="MarkdownV2"); return
+        await msg.answer(TIME_INVALID, parse_mode="Markdown"); return
     set_survey_time(msg.from_user.id, t)
-    await msg.answer(TIME_SAVED.format(time=t), parse_mode="MarkdownV2")
-    await msg.answer(ASK_MORNING_TIME, parse_mode="MarkdownV2")
+    await msg.answer(TIME_SAVED.format(time=t), parse_mode="Markdown")
+    await msg.answer(ASK_MORNING_TIME, parse_mode="Markdown")
     await state.set_state(RegisterStates.waiting_morning_time)
 
 @router.message(RegisterStates.waiting_morning_time)
@@ -756,10 +756,10 @@ async def reg_morning_time(msg: Message, state: FSMContext):
     else:
         t = normalize_time(text)
         if not t:
-            await msg.answer(TIME_INVALID, parse_mode="MarkdownV2"); return
+            await msg.answer(TIME_INVALID, parse_mode="Markdown"); return
         set_morning_time(msg.from_user.id, t)
-        await msg.answer(TIME_SAVED.format(time=t), parse_mode="MarkdownV2")
-    await msg.answer(SETUP_DONE, parse_mode="MarkdownV2", reply_markup=main_menu())
+        await msg.answer(TIME_SAVED.format(time=t), parse_mode="Markdown")
+    await msg.answer(SETUP_DONE, parse_mode="Markdown", reply_markup=main_menu())
     await state.clear()
     if data.get("run_trial"):
         await _start_main_survey(msg, state)
@@ -773,43 +773,43 @@ async def menu_time(msg: Message):
     if not u: return
     await msg.answer(
         TIME_SETTINGS.format(survey_time=u["survey_time"], morning_time=u["morning_time"] or "отключена"),
-        parse_mode="MarkdownV2", reply_markup=time_settings_kb(),
+        parse_mode="Markdown", reply_markup=time_settings_kb(),
     )
 
 @router.callback_query(F.data == "time:survey")
 async def cb_time_survey(call: CallbackQuery, state: FSMContext):
-    await call.message.answer("✏️ Введи новое время вечернего опроса \\(формат *ЧЧ:ММ*\\):", parse_mode="MarkdownV2")
+    await call.message.answer("✏️ Введи новое время вечернего опроса (формат *ЧЧ:ММ*):", parse_mode="Markdown")
     await state.set_state(TimeEditStates.editing_survey)
     await call.answer()
 
 @router.callback_query(F.data == "time:morning")
 async def cb_time_morning(call: CallbackQuery, state: FSMContext):
-    await call.message.answer("✏️ Введи время утренней рассылки \\(формат *ЧЧ:ММ*\\):", parse_mode="MarkdownV2")
+    await call.message.answer("✏️ Введи время утренней рассылки (формат *ЧЧ:ММ*):", parse_mode="Markdown")
     await state.set_state(TimeEditStates.editing_morning)
     await call.answer()
 
 @router.callback_query(F.data == "time:morning_off")
 async def cb_morning_off(call: CallbackQuery):
     set_morning_time(call.from_user.id, None)
-    await call.message.answer(TIME_MORNING_OFF, parse_mode="MarkdownV2")
+    await call.message.answer(TIME_MORNING_OFF, parse_mode="Markdown")
     await call.answer()
 
 @router.message(TimeEditStates.editing_survey)
 async def edit_survey(msg: Message, state: FSMContext):
     t = normalize_time(msg.text)
     if not t:
-        await msg.answer(TIME_INVALID, parse_mode="MarkdownV2"); return
+        await msg.answer(TIME_INVALID, parse_mode="Markdown"); return
     set_survey_time(msg.from_user.id, t)
-    await msg.answer(TIME_SAVED.format(time=t), parse_mode="MarkdownV2")
+    await msg.answer(TIME_SAVED.format(time=t), parse_mode="Markdown")
     await state.clear()
 
 @router.message(TimeEditStates.editing_morning)
 async def edit_morning(msg: Message, state: FSMContext):
     t = normalize_time(msg.text)
     if not t:
-        await msg.answer(TIME_INVALID, parse_mode="MarkdownV2"); return
+        await msg.answer(TIME_INVALID, parse_mode="Markdown"); return
     set_morning_time(msg.from_user.id, t)
-    await msg.answer(TIME_SAVED.format(time=t), parse_mode="MarkdownV2")
+    await msg.answer(TIME_SAVED.format(time=t), parse_mode="Markdown")
     await state.clear()
 
 
@@ -818,7 +818,7 @@ async def edit_morning(msg: Message, state: FSMContext):
 async def _start_main_survey(msg: Message, state: FSMContext):
     await state.set_state(SurveyStates.main_q)
     await state.update_data(answers=[], q_idx=0)
-    await msg.answer(SURVEY_QUESTIONS[0], parse_mode="MarkdownV2", reply_markup=likert_kb("mq"))
+    await msg.answer(SURVEY_QUESTIONS[0], parse_mode="Markdown", reply_markup=likert_kb("mq"))
 
 @router.callback_query(F.data == "survey:start_main")
 async def cb_survey_start(call: CallbackQuery, state: FSMContext):
@@ -837,7 +837,7 @@ async def cb_main_answer(call: CallbackQuery, state: FSMContext, bot: Bot):
     if len(answers) < len(SURVEY_QUESTIONS):
         await state.update_data(answers=answers)
         await call.message.answer(
-            SURVEY_QUESTIONS[len(answers)], parse_mode="MarkdownV2",
+            SURVEY_QUESTIONS[len(answers)], parse_mode="Markdown",
             reply_markup=likert_kb("mq"),
         )
         await call.answer(); return
@@ -855,21 +855,21 @@ async def cb_main_answer(call: CallbackQuery, state: FSMContext, bot: Bot):
         add_points(uid, POINTS_STREAK_BONUS)
         text += "\n" + STREAK_BONUS.format(streak=streak)
 
-    await call.message.answer(text, parse_mode="MarkdownV2")
+    await call.message.answer(text, parse_mode="Markdown")
     await state.clear()
     await call.answer()
 
     # Триггеры для админа
     name = call.from_user.first_name or str(uid)
-    dt   = datetime.now().strftime("%d\\.%m\\.%Y %H:%M")
+    dt   = datetime.now().strftime("%d.%m.%Y %H:%M")
     for q in TRIGGER_QUESTIONS:
         if q <= len(answers) and answers[q-1] == TRIGGER_VALUE:
             try:
-                await bot.send_message(ADMIN_ID, ADMIN_TRIGGER.format(uid=uid, name=name, q=q, dt=dt), parse_mode="MarkdownV2")
+                await bot.send_message(ADMIN_ID, ADMIN_TRIGGER.format(uid=uid, name=name, q=q, dt=dt), parse_mode="Markdown")
             except Exception: pass
     if get_red_streak(uid) >= RED_STREAK_ALERT:
         try:
-            await bot.send_message(ADMIN_ID, ADMIN_RED.format(uid=uid, name=name, days=get_red_streak(uid)), parse_mode="MarkdownV2")
+            await bot.send_message(ADMIN_ID, ADMIN_RED.format(uid=uid, name=name, days=get_red_streak(uid)), parse_mode="Markdown")
         except Exception: pass
 
 
@@ -883,11 +883,11 @@ async def menu_express(msg: Message, state: FSMContext):
         diff = (datetime.now(pytz.utc) - last_dt.replace(tzinfo=pytz.utc)).total_seconds()
         if diff < COOLDOWN_EXPRESS:
             mins = int((COOLDOWN_EXPRESS - diff) // 60) + 1
-            await msg.answer(EXPRESS_COOLDOWN.format(minutes=mins), parse_mode="MarkdownV2"); return
+            await msg.answer(EXPRESS_COOLDOWN.format(minutes=mins), parse_mode="Markdown"); return
     await state.set_state(SurveyStates.express_q)
     await state.update_data(answers=[])
-    await msg.answer(EXPRESS_START, parse_mode="MarkdownV2")
-    await msg.answer(EXPRESS_QUESTIONS[0], parse_mode="MarkdownV2", reply_markup=likert_kb("eq"))
+    await msg.answer(EXPRESS_START, parse_mode="Markdown")
+    await msg.answer(EXPRESS_QUESTIONS[0], parse_mode="Markdown", reply_markup=likert_kb("eq"))
 
 @router.callback_query(SurveyStates.express_q, F.data.startswith("eq:"))
 async def cb_express_answer(call: CallbackQuery, state: FSMContext):
@@ -900,7 +900,7 @@ async def cb_express_answer(call: CallbackQuery, state: FSMContext):
     if len(answers) < len(EXPRESS_QUESTIONS):
         await state.update_data(answers=answers)
         await call.message.answer(
-            EXPRESS_QUESTIONS[len(answers)], parse_mode="MarkdownV2",
+            EXPRESS_QUESTIONS[len(answers)], parse_mode="Markdown",
             reply_markup=likert_kb("eq"),
         )
         await call.answer(); return
@@ -913,7 +913,7 @@ async def cb_express_answer(call: CallbackQuery, state: FSMContext):
     log_task(uid, "express", POINTS_EXPRESS)
     await call.message.answer(
         EXPRESS_RESULT.format(score=score, avg=avg, hint=express_hint(score)),
-        parse_mode="MarkdownV2",
+        parse_mode="Markdown",
     )
     await state.clear()
     await call.answer()
@@ -923,7 +923,7 @@ async def cb_express_answer(call: CallbackQuery, state: FSMContext):
 
 @router.message(F.text == BTN_BREATHING)
 async def menu_breathing(msg: Message):
-    await msg.answer(BREATHING_MENU, parse_mode="MarkdownV2", reply_markup=breathing_kb())
+    await msg.answer(BREATHING_MENU, parse_mode="Markdown", reply_markup=breathing_kb())
 
 @router.callback_query(F.data.startswith("breath_"))
 async def cb_breathing(call: CallbackQuery):
@@ -950,7 +950,7 @@ async def cb_breathing(call: CallbackQuery):
         mins = int((COOLDOWN_BREATHING - diff) // 60) + 1
         full = BREATHING_COOLDOWN.format(minutes=mins, text=text)
 
-    await call.message.answer(full, parse_mode="MarkdownV2")
+    await call.message.answer(full, parse_mode="Markdown")
     await call.answer()
 
 
@@ -968,7 +968,7 @@ async def menu_stats(msg: Message):
             survey_list  = format_mood_list(get_last_moods(msg.from_user.id, "main",    7)),
             express_list = format_mood_list(get_last_moods(msg.from_user.id, "express", 7)),
         ),
-        parse_mode="MarkdownV2",
+        parse_mode="Markdown",
     )
 
 @router.message(F.text == BTN_TASKS)
@@ -984,7 +984,7 @@ async def menu_tasks(msg: Message):
             express_status = DONE_ICON if "express"   in done else TODO_ICON,
             points         = u["points"],
         ),
-        parse_mode="MarkdownV2",
+        parse_mode="Markdown",
     )
 
 
@@ -996,29 +996,29 @@ async def menu_moon(msg: Message):
         phase_key = get_moon_phase_key()
     except Exception as e:
         logger.error("ephem: %s", e)
-        await msg.answer("⚠️ Не удалось определить фазу луны\\. Попробуй позже\\.", parse_mode="MarkdownV2"); return
+        await msg.answer("⚠️ Не удалось определить фазу луны. Попробуй позже.", parse_mode="Markdown"); return
 
     icon, name = MOON_PHASES.get(phase_key, ("🌙", "Неизвестная фаза"))
-    caption    = MOON_CAPTION.format(icon=icon, name=name, date=date.today().strftime("%d\\.%m\\.%Y"))
+    caption    = MOON_CAPTION.format(icon=icon, name=name, date=date.today().strftime("%d.%m.%Y"))
     if random.random() < 0.30:
         caption += MOON_DISCLAIMER
 
     photo = moon_photo_path(phase_key)
     if photo:
-        await msg.answer_photo(FSInputFile(photo), caption=caption, parse_mode="MarkdownV2")
+        await msg.answer_photo(FSInputFile(photo), caption=caption, parse_mode="Markdown")
     else:
-        await msg.answer(caption + "\n\n_\\(картинка пока не загружена\\)_", parse_mode="MarkdownV2")
+        await msg.answer(caption + "\n\n_(картинка пока не загружена)_", parse_mode="Markdown")
 
 
 # ─── О боте / Практики ──────────────────────────────────────────
 
 @router.message(F.text == BTN_ABOUT)
 async def menu_about(msg: Message):
-    await msg.answer(ABOUT_BOT, parse_mode="MarkdownV2")
+    await msg.answer(ABOUT_BOT, parse_mode="Markdown")
 
 @router.message(F.text == BTN_PRACTICES)
 async def menu_practices(msg: Message):
-    await msg.answer(PRACTICES_SOON, parse_mode="MarkdownV2")
+    await msg.answer(PRACTICES_SOON, parse_mode="Markdown")
 
 
 # ─── Администратор ──────────────────────────────────────────────
@@ -1039,7 +1039,7 @@ async def cmd_admin_stats(msg: Message):
         f"📈 Средний балл: *{s['avg_score']}*\n\n"
         f"*Зоны:*\n🟢 {z.get('green',0)}  🟡 {z.get('yellow',0)}  🔴 {z.get('red',0)}\n\n"
         f"*Пол:*\n" + "\n".join(f"• {k}: {v}" for k,v in g.items()),
-        parse_mode="MarkdownV2",
+        parse_mode="Markdown",
     )
 
 @router.message(Command("admin_users"))
@@ -1058,7 +1058,7 @@ async def cmd_admin_users(msg: Message):
             chunks.append("\n".join(buf[:-1])); buf = [buf[-1]]
     chunks.append("\n".join(buf))
     for c in chunks:
-        await msg.answer(c or "Нет пользователей\\.", parse_mode="MarkdownV2")
+        await msg.answer(c or "Нет пользователей.", parse_mode="Markdown")
 
 @router.message(Command("export_stats"))
 async def cmd_export(msg: Message):
@@ -1079,26 +1079,26 @@ async def cmd_add_points(msg: Message):
     if not _is_admin(msg): return
     parts = (msg.text or "").split()
     if len(parts) != 3:
-        await msg.answer("Формат: `/add_points <user_id> <points>`", parse_mode="MarkdownV2"); return
+        await msg.answer("Формат: `/add_points <user_id> <points>`", parse_mode="Markdown"); return
     try:
         uid, pts = int(parts[1]), int(parts[2])
     except ValueError:
-        await msg.answer("Неверные аргументы\\."); return
+        await msg.answer("Неверные аргументы."); return
     total = add_points(uid, pts)
-    await msg.answer(f"✅ Начислено *{pts}* очков `{uid}`\\. Итого: *{total}*", parse_mode="MarkdownV2")
+    await msg.answer(f"✅ Начислено *{pts}* очков `{uid}`. Итого: *{total}*", parse_mode="Markdown")
 
 @router.message(Command("set_points"))
 async def cmd_set_points(msg: Message):
     if not _is_admin(msg): return
     parts = (msg.text or "").split()
     if len(parts) != 3:
-        await msg.answer("Формат: `/set_points <user_id> <points>`", parse_mode="MarkdownV2"); return
+        await msg.answer("Формат: `/set_points <user_id> <points>`", parse_mode="Markdown"); return
     try:
         uid, pts = int(parts[1]), int(parts[2])
     except ValueError:
-        await msg.answer("Неверные аргументы\\."); return
+        await msg.answer("Неверные аргументы."); return
     set_points_value(uid, pts)
-    await msg.answer(f"✅ Очки `{uid}` установлены: *{pts}*", parse_mode="MarkdownV2")
+    await msg.answer(f"✅ Очки `{uid}` установлены: *{pts}*", parse_mode="Markdown")
 
 
 # ════════════════════════════════════════════════════════════════
@@ -1106,11 +1106,11 @@ async def cmd_set_points(msg: Message):
 # ════════════════════════════════════════════════════════════════
 
 MORNING_CAPTIONS = [
-    "🌅 Доброе утро\\! Сегодня — новый шанс быть в балансе 🌿",
-    "☀️ Привет\\! Одна маленькая дыхательная практика — и день начнётся отлично 🧘",
-    "🌸 Новый день — новые возможности\\. Ты справишься\\! 💪",
-    "🌤 Сделай что\\-то маленькое для себя сегодня\\. Начни с дыхания ✨",
-    "🌻 Доброе утро\\! Стресс временен, ты постоянен\\(\\-на\\) 🤍",
+    "🌅 Доброе утро! Сегодня — новый шанс быть в балансе 🌿",
+    "☀️ Привет! Одна маленькая дыхательная практика — и день начнётся отлично 🧘",
+    "🌸 Новый день — новые возможности. Ты справишься! 💪",
+    "🌤 Сделай что-то маленькое для себя сегодня. Начни с дыхания ✨",
+    "🌻 Доброе утро! Стресс временен, ты постоянен(-на) 🤍",
 ]
 
 async def broadcast_fact(bot: Bot):
@@ -1118,7 +1118,7 @@ async def broadcast_fact(bot: Bot):
     users = get_all_users()
     for u in users:
         try:
-            await bot.send_message(u["user_id"], FACT_PREFIX + fact, parse_mode="MarkdownV2")
+            await bot.send_message(u["user_id"], FACT_PREFIX + fact, parse_mode="Markdown")
         except Exception: pass
     logger.info("Факт разослан %d пользователям", len(users))
 
@@ -1127,7 +1127,7 @@ async def tick_evening(bot: Bot):
     for u in get_users_by_survey_time(now_str):
         try:
             await bot.send_message(
-                u["user_id"], EVENING_PUSH, parse_mode="MarkdownV2",
+                u["user_id"], EVENING_PUSH, parse_mode="Markdown",
                 reply_markup=survey_start_kb(),
             )
         except Exception: pass
@@ -1139,9 +1139,9 @@ async def tick_morning(bot: Bot):
     for u in get_users_by_morning_time(now_str):
         try:
             if photo:
-                await bot.send_photo(u["user_id"], FSInputFile(photo), caption=caption, parse_mode="MarkdownV2")
+                await bot.send_photo(u["user_id"], FSInputFile(photo), caption=caption, parse_mode="Markdown")
             else:
-                await bot.send_message(u["user_id"], caption, parse_mode="MarkdownV2")
+                await bot.send_message(u["user_id"], caption, parse_mode="Markdown")
         except Exception: pass
 
 def setup_scheduler(bot: Bot):
@@ -1161,7 +1161,7 @@ async def main():
     init_db()
     bot = Bot(
         token=BOT_TOKEN,
-        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2),
+        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN),
     )
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
