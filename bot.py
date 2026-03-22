@@ -19,7 +19,6 @@ import asyncio, csv, io, logging, os, random, re, sqlite3
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta
 
-import ephem
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram import Bot, Dispatcher, F, Router
@@ -672,25 +671,35 @@ def load_facts():
         lines = [l.strip() for l in f if l.strip()]
     return lines or ["Краткий стресс (эустресс) может повышать продуктивность!"]
 
-# ИСПРАВЛЕНИЕ 1.11: более надёжный расчёт фазы луны с полным fallback
+# Расчёт фазы луны без внешних библиотек (алгоритм Конвея)
 def moon_phase_key():
-    try:
-        m = ephem.Moon()
-        m.compute(date.today().strftime("%Y/%m/%d"))
-        age  = float(m.age)
-        frac = (age % 29.53) / 29.53
-        if frac < 0.03:  return "new"
-        if frac < 0.25:  return "waxing_crescent"
-        if frac < 0.27:  return "first_quarter"
-        if frac < 0.48:  return "waxing_gibbous"
-        if frac < 0.52:  return "full"
-        if frac < 0.73:  return "waning_gibbous"
-        if frac < 0.77:  return "last_quarter"
-        if frac < 0.97:  return "waning_crescent"
-        return "new"
-    except Exception as e:
-        logger.error("ephem error: %s", e)
-        return None   # сигнал об ошибке
+    """
+    Вычисляет фазу луны по текущей дате.
+    Использует только стандартную библиотеку math.
+    Точность: ~1 день, достаточно для отображения фазы.
+    """
+    import math
+    today = date.today()
+    # Юлианская дата
+    y, m, d = today.year, today.month, today.day
+    if m < 3:
+        y -= 1
+        m += 12
+    a = int(y / 100)
+    b = 2 - a + int(a / 4)
+    jd = int(365.25 * (y + 4716)) + int(30.6001 * (m + 1)) + d + b - 1524.5
+    # Дни с известного новолуния (2000-01-06 = JD 2451549.5)
+    days_since_new = (jd - 2451549.5) % 29.53059
+    frac = days_since_new / 29.53059
+    if frac < 0.03:   return "new"
+    if frac < 0.25:   return "waxing_crescent"
+    if frac < 0.27:   return "first_quarter"
+    if frac < 0.48:   return "waxing_gibbous"
+    if frac < 0.52:   return "full"
+    if frac < 0.73:   return "waning_gibbous"
+    if frac < 0.77:   return "last_quarter"
+    if frac < 0.97:   return "waning_crescent"
+    return "new"
 
 MOON_FILE_MAP = {
     "new":             "new_moon",
@@ -1033,7 +1042,7 @@ async def menu_moon(msg: Message):
         # ИСПРАВЛЕНИЕ 1.11: fallback вместо краша
         await msg.answer(
             "🌙 Не удалось рассчитать фазу луны.\n"
-            "Проверь, установлена ли библиотека ephem на сервере.\n\n"
+            
             "_Попробуй позже._",
             parse_mode=MD
         )
