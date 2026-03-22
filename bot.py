@@ -1,39 +1,4 @@
-"""
-bot.py — «Анти-стресс_Clo» v0.3.7
-Единый файл для деплоя на Bothost.
-
-На сервере уже есть:
-  moon_photos/   — картинки фаз луны (имена = ключи фаз, напр. full.jpg)
-  morning_images/ — утренние картинки (любые имена)
-  facts_day.txt  — факты о стрессе, по одному на строку
-
-Запуск: python bot.py
-Токен:  переменная окружения BOT_TOKEN
-"""
-
-import asyncio
-import csv
-import io
-import logging
-import os
-import random
-import re
-import sqlite3
-from contextlib import contextmanager
-from datetime import date, datetime, timedelta
-
-import ephem          # pip install ephem
-import pytz           # pip install pytz
-from apscheduler.schedulers.asyncio import AsyncIOScheduler   # pip install apscheduler
-from aiogram import Bot, Dispatcher, F, Router
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart, Command
-from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import (
-    BufferedInputFile, CallbackQuery, FSInputFile,
+InputFile, CallbackQuery, FSInputFile,
     InlineKeyboardButton, InlineKeyboardMarkup,
     KeyboardButton, Message, ReplyKeyboardMarkup,
 )
