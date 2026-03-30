@@ -1221,17 +1221,22 @@ async def cmd_admin_users(msg: Message):
     users = admin_all_users()
     if not users:
         await msg.answer("Нет пользователей."); return
+    
+    # Экранируем подчеркивания, чтобы Markdown не падал
     lines = [
-        f"`{u['user_id']}` @{u['username'] or '-нет юза-'} | "
+        f"`{u['user_id']}` @{str(u['username']).replace('_', '\\_') if u['username'] else '—'} | "
         f"🏆{u['points']} | 🔥{u['streak']} | ⏰{u['survey_time']}"
         for u in users
     ]
+    
     buf = []
     for line in lines:
         buf.append(line)
-        if len("\n".join(buf)) > 3800:
-            await msg.answer("\n".join(buf[:-1]), parse_mode=MD)
-            buf = [buf[-1]]
+        # Если накопилось много текста, отправляем кусок
+        if len("\n".join(buf)) > 3500:
+            await msg.answer("\n".join(buf), parse_mode=MD)
+            buf = []
+    
     if buf:
         await msg.answer("\n".join(buf), parse_mode=MD)
 
