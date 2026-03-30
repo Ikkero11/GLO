@@ -1222,7 +1222,7 @@ async def cmd_admin_users(msg: Message):
     if not users:
         await msg.answer("Нет пользователей."); return
     lines = [
-        f"`{u['user_id']}` @{u['username'] or '—'} | "
+        f"`{u['user_id']}` @{u['username'] or '-нет юза-'} | "
         f"🏆{u['points']} | 🔥{u['streak']} | ⏰{u['survey_time']}"
         for u in users
     ]
