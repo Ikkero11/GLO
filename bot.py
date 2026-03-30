@@ -1,13 +1,11 @@
 """
-bot.py — Анти-стресс_Clo v0.3.8
-Исправлены замечания тестировщика:
-  - 1.11  Фаза луны — более надёжный расчёт + fallback-текст
-  - 2.5   /help команда добавлена; кнопка «О боте» теперь работает
-           (была коллизия: BTN_INFO_GROUP и BTN_ABOUT имели одинаковый текст)
-  - 3.3   База данных хранится по пути DB_PATH из env-переменной,
-           не перезаписывается при git pull
-  - 5.1   Статистика — убраны проблемные символы форматирования для iOS
-  - 6.1   init_db() использует CREATE TABLE IF NOT EXISTS — данные не сбрасываются
+bot.py — Анти-стресс_Clo v0.4.0
+Изменения v0.4.0:
+  - Добавлена команда /admin — показывает все админ-команды
+  - Обновлены вопросы опросов: одна тема, но разные формулировки
+  - Добавлена команда /broadcast — оповещение всех пользователей об обновлении
+  - Убрана информация об авторе и проекте из раздела «О боте»
+  - Добавлен раздел «Практики» с 5 техниками снижения стресса
 
 На сервере рядом с bot.py:
   facts_day.txt, moon_photos/, morning_images/
@@ -40,7 +38,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 BOT_TOKEN  = os.getenv("BOT_TOKEN", "YOUR_TOKEN_HERE")
 ADMIN_ID   = 7498442456
-VERSION    = "0.3.8"
+VERSION    = "0.4.0"
 BOT_NAME   = "Анти-стресс_Clo"
 TIMEZONE   = "Europe/Moscow"
 MSK        = pytz.timezone(TIMEZONE)
@@ -67,13 +65,7 @@ MOON_DIR    = "moon_photos"
 MORNING_DIR = "morning_images"
 FACTS_TIME  = "13:30"
 
-# ── ИСПРАВЛЕНИЕ 3.3 / 6.1 ────────────────────────────────────
-# DB хранится ВНЕ папки с кодом — при git pull не затирается.
-# Bothost: задай переменную DB_PATH=/data/antistress.db
-# По умолчанию — /data/antistress.db (вне /app)
 DB_PATH = os.getenv("DB_PATH", "/data/antistress.db")
-
-# Гарантируем, что папка существует
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
 logging.basicConfig(
@@ -102,7 +94,6 @@ def get_conn():
         conn.close()
 
 def init_db():
-    # ИСПРАВЛЕНИЕ 6.1: CREATE TABLE IF NOT EXISTS — никогда не удаляет данные
     with get_conn() as conn:
         conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
@@ -341,7 +332,6 @@ TIME_SAVED       = "✅ Время сохранено: *{time}*"
 TIME_MORNING_OFF = "✅ Утренняя рассылка отключена."
 TIME_SETTINGS    = "⏰ *Настройка времени*\n\n🌆 Вечерний опрос: *{survey_time}*\n🌅 Утренняя рассылка: *{morning_time}*"
 
-# ИСПРАВЛЕНИЕ 2.5: /help
 HELP_TEXT = (
     f"ℹ️ *{BOT_NAME}*  v{VERSION}\n\n"
     "*Главное меню:*\n"
@@ -355,10 +345,10 @@ HELP_TEXT = (
     "• Вечерний опрос — 15 очков\n"
     "• Экспресс-тест — 10 очков\n"
     "• Дыхательная практика — 5 очков\n"
-    "• Бонус за серию дней — 10 очков\n\n"
-    "_Разработан в рамках конференции «Первые шаги в науку» 🔬_"
+    "• Бонус за серию дней — 10 очков"
 )
 
+# ИЗМЕНЕНИЕ 4: убрана информация об авторе и проекте
 ABOUT_TEXT = (
     f"🤍 *{BOT_NAME}*  v{VERSION}\n\n"
     "Этот бот помогает отслеживать уровень стресса и заботиться о себе — "
@@ -376,25 +366,70 @@ ABOUT_TEXT = (
     "🌙 *О луне:*\n"
     "Фазы луны добавлены для интереса — "
     "научного влияния на уровень стресса они не имеют.\n\n"
-    "──────────────────\n"
-    "📌 *О проекте*\n"
-    "Бот создан в рамках республиканской научно-практической "
-    "конференции школьников *«Первые шаги в науку»* (2026).\n"
-    "Автор: Алексей К., 11 класс, СОШ №9\n\n"
     "_Нужна помощь? Напиши /help_"
 )
 
-SURVEY_QUESTIONS = [
-    "🙆 *Вопрос 1 из 8 — Телесное напряжение*\n\nНасколько ты чувствуешь напряжение в теле прямо сейчас?\n\n_1 — совсем нет  |  5 — очень сильное_",
-    "📱 *Вопрос 2 из 8 — Цифровой шум*\n\nНасколько тебя утомляют уведомления, новости, соцсети сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
-    "🌀 *Вопрос 3 из 8 — Навязчивые мысли*\n\nКак часто сегодня крутились одни и те же тревожные мысли?\n\n_1 — совсем нет  |  5 — постоянно_",
-    "⚡ *Вопрос 4 из 8 — Концентрация и энергия*\n\nКак сложно было сегодня сосредоточиться и удерживать внимание?\n\n_1 — легко  |  5 — очень тяжело_",
-    "💛 *Вопрос 5 из 8 — Эмоциональный фон*\n\nНасколько сильными были негативные эмоции сегодня?\n\n_1 — совсем нет  |  5 — очень интенсивные_",
-    "🌙 *Вопрос 6 из 8 — Качество сна*\n\nКак ты оцениваешь свой прошлый сон?\n\n_1 — отлично  |  5 — очень плохо_",
-    "💬 *Вопрос 7 из 8 — Готовность к общению*\n\nНасколько тебе сегодня хотелось избегать людей?\n\n_1 — совсем нет  |  5 — очень сильно_",
-    "🎯 *Вопрос 8 из 8 — Ощущение контроля*\n\nНасколько ты чувствовал себя беспомощным сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
+# ИЗМЕНЕНИЕ 2: Обновлённые вопросы — одна тема (уровень стресса),
+# но каждый раз случайная формулировка из пула
+SURVEY_QUESTIONS_POOL = [
+    # Блок 1 — Телесное напряжение (варианты)
+    [
+        "🙆 *Вопрос 1 из 8 — Тело*\n\nНасколько ты чувствуешь напряжение в теле прямо сейчас?\n\n_1 — совсем нет  |  5 — очень сильное_",
+        "🙆 *Вопрос 1 из 8 — Тело*\n\nЕсть ли зажатость в плечах, шее или спине сегодня?\n\n_1 — совсем нет  |  5 — очень сильная_",
+        "🙆 *Вопрос 1 из 8 — Тело*\n\nКак бы ты оценил физическое напряжение в теле за сегодня?\n\n_1 — полностью расслаблен  |  5 — очень напряжён_",
+    ],
+    # Блок 2 — Цифровой шум (варианты)
+    [
+        "📱 *Вопрос 2 из 8 — Цифровой шум*\n\nНасколько тебя утомляют уведомления, новости, соцсети сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
+        "📱 *Вопрос 2 из 8 — Цифровой шум*\n\nСколько раз сегодня ты бездумно тянулся к телефону?\n\n_1 — почти не тянулся  |  5 — постоянно_",
+        "📱 *Вопрос 2 из 8 — Цифровой шум*\n\nЧувствуешь ли перегрузку от потока информации сегодня?\n\n_1 — совсем нет  |  5 — сильная перегрузка_",
+    ],
+    # Блок 3 — Навязчивые мысли (варианты)
+    [
+        "🌀 *Вопрос 3 из 8 — Мысли*\n\nКак часто сегодня крутились одни и те же тревожные мысли?\n\n_1 — совсем нет  |  5 — постоянно_",
+        "🌀 *Вопрос 3 из 8 — Мысли*\n\nТяжело ли было «отключить голову» сегодня?\n\n_1 — легко  |  5 — очень тяжело_",
+        "🌀 *Вопрос 3 из 8 — Мысли*\n\nВозникало ли ощущение, что мысли «идут по кругу»?\n\n_1 — совсем нет  |  5 — почти всё время_",
+    ],
+    # Блок 4 — Концентрация (варианты)
+    [
+        "⚡ *Вопрос 4 из 8 — Концентрация*\n\nКак сложно было сегодня сосредоточиться и удерживать внимание?\n\n_1 — легко  |  5 — очень тяжело_",
+        "⚡ *Вопрос 4 из 8 — Концентрация*\n\nОтвлекался ли ты сегодня больше обычного?\n\n_1 — совсем нет  |  5 — очень часто_",
+        "⚡ *Вопрос 4 из 8 — Концентрация*\n\nУдавалось ли удерживать фокус на задачах?\n\n_1 — без проблем  |  5 — совсем не удавалось_",
+    ],
+    # Блок 5 — Эмоциональный фон (варианты)
+    [
+        "💛 *Вопрос 5 из 8 — Эмоции*\n\nНасколько сильными были негативные эмоции сегодня?\n\n_1 — совсем нет  |  5 — очень интенсивные_",
+        "💛 *Вопрос 5 из 8 — Эмоции*\n\nЧувствовал ли ты раздражительность или тревогу сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
+        "💛 *Вопрос 5 из 8 — Эмоции*\n\nКак бы ты описал своё эмоциональное состояние за день?\n\n_1 — спокойное, ровное  |  5 — взволнованное, напряжённое_",
+    ],
+    # Блок 6 — Сон (варианты)
+    [
+        "🌙 *Вопрос 6 из 8 — Сон*\n\nКак ты оцениваешь свой прошлый сон?\n\n_1 — отлично  |  5 — очень плохо_",
+        "🌙 *Вопрос 6 из 8 — Сон*\n\nПросыпался ли ты отдохнувшим сегодня утром?\n\n_1 — да, хорошо  |  5 — совсем нет_",
+        "🌙 *Вопрос 6 из 8 — Сон*\n\nХватило ли тебе сна прошлой ночью?\n\n_1 — вполне  |  5 — совсем не хватило_",
+    ],
+    # Блок 7 — Общение (варианты)
+    [
+        "💬 *Вопрос 7 из 8 — Общение*\n\nНасколько тебе сегодня хотелось избегать людей?\n\n_1 — совсем нет  |  5 — очень сильно_",
+        "💬 *Вопрос 7 из 8 — Общение*\n\nРаздражало ли тебя сегодня общение с окружающими?\n\n_1 — совсем нет  |  5 — очень сильно_",
+        "💬 *Вопрос 7 из 8 — Общение*\n\nЧувствовал ли ты желание побыть в одиночестве больше обычного?\n\n_1 — нет  |  5 — очень сильно_",
+    ],
+    # Блок 8 — Ощущение контроля (варианты)
+    [
+        "🎯 *Вопрос 8 из 8 — Контроль*\n\nНасколько ты чувствовал себя беспомощным сегодня?\n\n_1 — совсем нет  |  5 — очень сильно_",
+        "🎯 *Вопрос 8 из 8 — Контроль*\n\nБыло ли ощущение, что события вышли из-под контроля?\n\n_1 — нет, всё под контролем  |  5 — полностью вышли_",
+        "🎯 *Вопрос 8 из 8 — Контроль*\n\nУдавалось ли тебе управлять ситуацией сегодня?\n\n_1 — легко  |  5 — совсем не удавалось_",
+    ],
 ]
-EXPRESS_QUESTIONS = SURVEY_QUESTIONS[:4]
+
+def get_random_survey_questions():
+    """Возвращает список из 8 вопросов — по одному случайному из каждого блока."""
+    return [random.choice(block) for block in SURVEY_QUESTIONS_POOL]
+
+EXPRESS_QUESTIONS_POOL = SURVEY_QUESTIONS_POOL[:4]
+
+def get_random_express_questions():
+    return [random.choice(block) for block in EXPRESS_QUESTIONS_POOL]
 
 RESULT_GREEN  = "🟢 *Зелёная зона — Баланс!*\n\nКрасавчик! Ты в хорошем состоянии сегодня 🙌\nСохраняй этот ритм — ты справляешься.\n\n_{score} баллов из 40_"
 RESULT_YELLOW = "🟡 *Жёлтая зона — Умеренный стресс*\n\nЧувствуется нагрузка, но ты держишься 💪\nПопробуй технику дыхания — 5 минут могут изменить вечер.\n\n_{score} баллов из 40_"
@@ -449,7 +484,56 @@ BREATHING_TEXTS = {
 BREATHING_COOLDOWN = "🧘 Описание доступно, но очки получишь через *{minutes} мин.*\n\n{text}"
 BREATHING_POINTS   = "\n\n✨ *+{pts} очков* за практику!"
 
-# ИСПРАВЛЕНИЕ 5.1: статистика без сложного форматирования, совместима с iOS
+# ИЗМЕНЕНИЕ 5: Тексты для практик снижения стресса
+PRACTICES_TEXTS = {
+    "practice_grounding":
+        "🌍 *Техника заземления 5-4-3-2-1*\n\n"
+        "Возвращает в «здесь и сейчас» за 2–3 минуты.\n\n"
+        "Назови вслух или мысленно:\n"
+        "👁 *5 вещей*, которые ты видишь\n"
+        "✋ *4 вещи*, которые можешь потрогать\n"
+        "👂 *3 звука*, которые слышишь\n"
+        "👃 *2 запаха*, которые ощущаешь\n"
+        "👅 *1 вкус*, который чувствуешь\n\n"
+        "Фокусируйся на каждом ощущении — спешить не нужно 🌿",
+    "practice_cold_water":
+        "🧊 *Метод холодной воды*\n\n"
+        "Аварийный «тормоз» тревоги — работает за 30–60 секунд.\n\n"
+        "1️⃣ Подойди к раковине\n"
+        "2️⃣ Смочи запястья холодной водой\n"
+        "3️⃣ Или умойся — уделяя внимание ощущению холода\n\n"
+        "Холод активирует рефлекс ныряния — сердечный ритм замедляется, "
+        "тревога снижается. Это физиология, а не магия 🧬",
+    "practice_muscle_relax":
+        "💪 *Прогрессивная мышечная релаксация*\n\n"
+        "Снимает накопившееся телесное напряжение за 10 минут.\n\n"
+        "Для каждой группы мышц:\n"
+        "1️⃣ Напряги — *7 секунд* (сильно, но без боли)\n"
+        "2️⃣ Резко расслабь — *20 секунд*, чувствуй разницу\n\n"
+        "Порядок: ступни → голени → бёдра → живот → руки → плечи → лицо\n\n"
+        "_Метод Джекобсона — один из наиболее изученных способов снижения тревожности_ 🔬",
+    "practice_mind_dump":
+        "📝 *Выгрузка мыслей*\n\n"
+        "Освобождает «оперативную память» мозга.\n\n"
+        "1️⃣ Возьми лист бумаги или открой заметки\n"
+        "2️⃣ Поставь таймер на *3 минуты*\n"
+        "3️⃣ Пиши всё, что тебя беспокоит — без цензуры, потоком\n"
+        "4️⃣ Когда время выйдет — можно смять и выбросить\n\n"
+        "Не нужно анализировать написанное. Сам акт выгрузки снижает тревогу ✍️",
+    "practice_mindful_walk":
+        "🌅 *Осознанная прогулка*\n\n"
+        "Сочетание движения и присутствия снижает кортизол лучше, чем просто ходьба.\n\n"
+        "1️⃣ Выйди на улицу — *5–10 минут* достаточно\n"
+        "2️⃣ Убери телефон\n"
+        "3️⃣ Фокусируйся только на ощущениях:\n"
+        "   • Как чувствуется каждый шаг?\n"
+        "   • Какой воздух — тёплый, холодный?\n"
+        "   • Что видишь, что слышишь?\n\n"
+        "_Если выйти нельзя — подойдёт медленная ходьба по комнате_ 🚶",
+}
+
+PRACTICES_MENU_TEXT = "🧠 *Практики снижения стресса*\n\nВыбери технику — каждая займёт не больше 10 минут 👇"
+
 STATS_TEMPLATE = (
     "📊 *Твоя статистика*\n\n"
     "🏆 Очков: *{points}*\n"
@@ -485,10 +569,24 @@ MOON_DISCLAIMER = "\n\n_Научных доказательств влияния
 EVENING_PUSH     = "🌆 *Время подвести итоги дня!*\n\nПройди короткий опрос — займёт меньше 2 минут. Нажми на кнопку ниже 👇"
 SURVEY_START_BTN = "📝 Начать опрос"
 FACT_PREFIX      = "🧠 *Факт о стрессе*\n\n"
-PRACTICES_SOON   = "🧠 *Практики*\n\nЭтот раздел в разработке ✨\nСкоро здесь появятся медитации и техники заземления.\n\n_Следи за обновлениями!_"
 
 ADMIN_TRIGGER = "⚠️ *Триггер!*\nПользователь `{uid}` ({name}) поставил *5* в вопросе {q}.\nДата: {dt}"
 ADMIN_RED     = "🚨 *Длительный стресс!*\nПользователь `{uid}` ({name}) — *{days} дня подряд* в красной зоне."
+
+# ИЗМЕНЕНИЕ 1: текст со всеми админ-командами
+ADMIN_HELP_TEXT = (
+    f"🛠 *Админ-панель — {BOT_NAME}*\n\n"
+    "*Команды статистики:*\n"
+    "/admin\\_stats — общая статистика бота\n"
+    "/admin\\_users — список всех пользователей\n"
+    "/export\\_stats — экспорт настроений за 30 дней (CSV)\n\n"
+    "*Управление очками:*\n"
+    "/add\\_points `<user_id>` `<очки>` — начислить очки\n"
+    "/set\\_points `<user_id>` `<очки>` — установить очки\n\n"
+    "*Рассылки:*\n"
+    "/broadcast `<текст>` — отправить сообщение всем пользователям\n\n"
+    "_Все команды доступны только администратору._"
+)
 
 GROUP_STATS_TEXT = "📊 *Статистика*\n\nЗдесь ты можешь посмотреть результаты, задания на сегодня и быстро проверить состояние."
 GROUP_RELAX_TEXT = "🌿 *Практики и релакс*\n\nДыхательные упражнения, научно обоснованные практики и немного астрономии 🌙"
@@ -508,7 +606,7 @@ MORNING_CAPTIONS = [
 
 BTN_STATS_GROUP = "📊 Статистика"
 BTN_RELAX_GROUP = "🌿 Практики"
-BTN_INFO_GROUP  = "ℹ️ О боте"        # кнопка ГРУППЫ главного меню
+BTN_INFO_GROUP  = "ℹ️ О боте"
 
 BTN_MY_STATS    = "📊 Моя статистика"
 BTN_TASKS       = "📋 Мои задания"
@@ -518,7 +616,6 @@ BTN_BREATHING   = "🧘 Дыхательная гимнастика"
 BTN_PRACTICES   = "🧠 Практики"
 BTN_MOON        = "🌙 Фаза луны"
 
-# ИСПРАВЛЕНИЕ 2.5: BTN_ABOUT теперь ДРУГОЙ текст — нет коллизии с BTN_INFO_GROUP
 BTN_ABOUT       = "📖 О боте"
 BTN_TIME        = "⏰ Настроить время"
 
@@ -561,7 +658,6 @@ def relax_submenu():
 def info_submenu():
     return ReplyKeyboardMarkup(
         keyboard=[
-            # BTN_ABOUT теперь "📖 О боте" — не конфликтует с "ℹ️ О боте"
             [KeyboardButton(text=BTN_ABOUT), KeyboardButton(text=BTN_TIME)],
             [KeyboardButton(text=BTN_BACK)],
         ],
@@ -605,6 +701,19 @@ def breathing_kb():
     b.adjust(1)
     return b.as_markup()
 
+def practices_kb():
+    b = InlineKeyboardBuilder()
+    for cb, label in [
+        ("practice_grounding",     "🌍 Заземление 5-4-3-2-1"),
+        ("practice_cold_water",    "🧊 Холодная вода"),
+        ("practice_muscle_relax",  "💪 Мышечная релаксация"),
+        ("practice_mind_dump",     "📝 Выгрузка мыслей"),
+        ("practice_mindful_walk",  "🌅 Осознанная прогулка"),
+    ]:
+        b.button(text=label, callback_data=cb)
+    b.adjust(1)
+    return b.as_markup()
+
 def time_settings_kb():
     b = InlineKeyboardBuilder()
     b.row(
@@ -639,6 +748,9 @@ class TimeSt(StatesGroup):
     survey  = State()
     morning = State()
 
+class BroadcastSt(StatesGroup):
+    waiting_text = State()
+
 # ================================================================
 #  УТИЛИТЫ
 # ================================================================
@@ -671,16 +783,9 @@ def load_facts():
         lines = [l.strip() for l in f if l.strip()]
     return lines or ["Краткий стресс (эустресс) может повышать продуктивность!"]
 
-# Расчёт фазы луны без внешних библиотек (алгоритм Конвея)
 def moon_phase_key():
-    """
-    Вычисляет фазу луны по текущей дате.
-    Использует только стандартную библиотеку math.
-    Точность: ~1 день, достаточно для отображения фазы.
-    """
     import math
     today = date.today()
-    # Юлианская дата
     y, m, d = today.year, today.month, today.day
     if m < 3:
         y -= 1
@@ -688,7 +793,6 @@ def moon_phase_key():
     a = int(y / 100)
     b = 2 - a + int(a / 4)
     jd = int(365.25 * (y + 4716)) + int(30.6001 * (m + 1)) + d + b - 1524.5
-    # Дни с известного новолуния (2000-01-06 = JD 2451549.5)
     days_since_new = (jd - 2451549.5) % 29.53059
     frac = days_since_new / 29.53059
     if frac < 0.03:   return "new"
@@ -725,13 +829,12 @@ def rand_morning_img():
              if f.lower().endswith((".jpg",".jpeg",".png",".webp"))]
     return os.path.join(MORNING_DIR, random.choice(files)) if files else None
 
-# ИСПРАВЛЕНИЕ 5.1: форматирование статистики без спецсимволов
 def fmt_moods(rows):
     if not rows: return STATS_EMPTY
     lines = []
     for r in rows:
         icon = ZONE_ICONS.get(r["zone"], "⚪")
-        dt   = r["created_at"][:10]     # только дата, без времени — безопаснее для iOS
+        dt   = r["created_at"][:10]
         lines.append(f"{icon} {r['score']} баллов — {dt}")
     return "\n".join(lines)
 
@@ -777,7 +880,6 @@ async def cmd_start(msg: Message, state: FSMContext):
     await msg.answer(ASK_GENDER, parse_mode=MD, reply_markup=gender_kb())
     await state.set_state(RegSt.gender)
 
-# ИСПРАВЛЕНИЕ 2.5: /help
 @router.message(Command("help"))
 async def cmd_help(msg: Message):
     await msg.answer(HELP_TEXT, parse_mode=MD)
@@ -875,9 +977,10 @@ async def edit_morning(msg: Message, state: FSMContext):
 # ── Основной опрос ────────────────────────────────────────────
 
 async def _start_survey(msg: Message, state: FSMContext):
+    questions = get_random_survey_questions()
     await state.set_state(SurveySt.main_q)
-    await state.update_data(answers=[])
-    await msg.answer(SURVEY_QUESTIONS[0], parse_mode=MD, reply_markup=likert_kb("mq"))
+    await state.update_data(answers=[], questions=questions)
+    await msg.answer(questions[0], parse_mode=MD, reply_markup=likert_kb("mq"))
 
 @router.callback_query(F.data == "survey:start_main")
 async def cb_survey_start(call: CallbackQuery, state: FSMContext):
@@ -890,13 +993,14 @@ async def cb_main_q(call: CallbackQuery, state: FSMContext, bot: Bot):
     value   = int(call.data.split(":")[1])
     data    = await state.get_data()
     answers = data.get("answers", [])
+    questions = data.get("questions", get_random_survey_questions())
     answers.append(value)
     await call.message.edit_reply_markup()
 
-    if len(answers) < len(SURVEY_QUESTIONS):
+    if len(answers) < len(questions):
         await state.update_data(answers=answers)
         await call.message.answer(
-            SURVEY_QUESTIONS[len(answers)], parse_mode=MD, reply_markup=likert_kb("mq")
+            questions[len(answers)], parse_mode=MD, reply_markup=likert_kb("mq")
         )
         await call.answer(); return
 
@@ -941,23 +1045,25 @@ async def menu_express(msg: Message, state: FSMContext):
         if diff < COOLDOWN_EXPRESS:
             mins = int((COOLDOWN_EXPRESS - diff) // 60) + 1
             await msg.answer(EXPRESS_COOLDOWN.format(minutes=mins), parse_mode=MD); return
+    questions = get_random_express_questions()
     await state.set_state(SurveySt.express_q)
-    await state.update_data(answers=[])
+    await state.update_data(answers=[], questions=questions)
     await msg.answer(EXPRESS_START, parse_mode=MD)
-    await msg.answer(EXPRESS_QUESTIONS[0], parse_mode=MD, reply_markup=likert_kb("eq"))
+    await msg.answer(questions[0], parse_mode=MD, reply_markup=likert_kb("eq"))
 
 @router.callback_query(SurveySt.express_q, F.data.startswith("eq:"))
 async def cb_express_q(call: CallbackQuery, state: FSMContext):
     value   = int(call.data.split(":")[1])
     data    = await state.get_data()
     answers = data.get("answers", [])
+    questions = data.get("questions", get_random_express_questions())
     answers.append(value)
     await call.message.edit_reply_markup()
 
-    if len(answers) < len(EXPRESS_QUESTIONS):
+    if len(answers) < len(questions):
         await state.update_data(answers=answers)
         await call.message.answer(
-            EXPRESS_QUESTIONS[len(answers)], parse_mode=MD, reply_markup=likert_kb("eq")
+            questions[len(answers)], parse_mode=MD, reply_markup=likert_kb("eq")
         )
         await call.answer(); return
 
@@ -1000,6 +1106,20 @@ async def cb_breath(call: CallbackQuery):
         out  = BREATHING_COOLDOWN.format(minutes=mins, text=text)
     await call.message.answer(out, parse_mode=MD); await call.answer()
 
+# ── Практики (ИЗМЕНЕНИЕ 5) ────────────────────────────────────
+
+@router.message(F.text == BTN_PRACTICES)
+async def menu_practices(msg: Message):
+    await msg.answer(PRACTICES_MENU_TEXT, parse_mode=MD, reply_markup=practices_kb())
+
+@router.callback_query(F.data.startswith("practice_"))
+async def cb_practice(call: CallbackQuery):
+    text = PRACTICES_TEXTS.get(call.data)
+    if not text:
+        await call.answer("Неизвестная практика"); return
+    await call.message.answer(text, parse_mode=MD)
+    await call.answer()
+
 # ── Статистика ────────────────────────────────────────────────
 
 @router.message(F.text == BTN_MY_STATS)
@@ -1039,10 +1159,8 @@ async def menu_tasks(msg: Message):
 async def menu_moon(msg: Message):
     key = moon_phase_key()
     if key is None:
-        # ИСПРАВЛЕНИЕ 1.11: fallback вместо краша
         await msg.answer(
             "🌙 Не удалось рассчитать фазу луны.\n"
-            
             "_Попробуй позже._",
             parse_mode=MD
         )
@@ -1066,20 +1184,21 @@ async def menu_moon(msg: Message):
         logger.error("moon send error: %s", e)
         await msg.answer(caption, parse_mode=MD)
 
-# ── О боте / Практики ─────────────────────────────────────────
+# ── О боте ─────────────────────────────────────────────────────
 
-# ИСПРАВЛЕНИЕ 2.5: BTN_ABOUT = "📖 О боте" — больше нет конфликта с BTN_INFO_GROUP
 @router.message(F.text == BTN_ABOUT)
 async def menu_about(msg: Message):
     await msg.answer(ABOUT_TEXT, parse_mode=MD)
 
-@router.message(F.text == BTN_PRACTICES)
-async def menu_practices(msg: Message):
-    await msg.answer(PRACTICES_SOON, parse_mode=MD)
-
 # ── Администратор ─────────────────────────────────────────────
 
 def _adm(msg): return msg.from_user.id == ADMIN_ID
+
+# ИЗМЕНЕНИЕ 1: команда /admin — показывает все доступные команды
+@router.message(Command("admin"))
+async def cmd_admin(msg: Message):
+    if not _adm(msg): return
+    await msg.answer(ADMIN_HELP_TEXT, parse_mode=MD)
 
 @router.message(Command("admin_stats"))
 async def cmd_admin_stats(msg: Message):
@@ -1155,6 +1274,54 @@ async def cmd_set_points(msg: Message):
         await msg.answer("Неверные аргументы."); return
     set_points_value(uid, pts)
     await msg.answer(f"✅ Очки `{uid}` установлены: *{pts}*", parse_mode=MD)
+
+# ИЗМЕНЕНИЕ 3: команда /broadcast — рассылка всем пользователям
+@router.message(Command("broadcast"))
+async def cmd_broadcast(msg: Message, state: FSMContext):
+    if not _adm(msg): return
+    # Если текст указан сразу — /broadcast <текст>
+    parts = (msg.text or "").split(None, 1)
+    if len(parts) > 1 and parts[1].strip():
+        await _do_broadcast(msg, parts[1].strip())
+    else:
+        await msg.answer(
+            "✉️ *Рассылка*\n\nОтправь текст сообщения для рассылки всем пользователям.\n\n"
+            "_Для отмены напиши /cancel_",
+            parse_mode=MD
+        )
+        await state.set_state(BroadcastSt.waiting_text)
+
+@router.message(BroadcastSt.waiting_text)
+async def broadcast_text_received(msg: Message, state: FSMContext, bot: Bot):
+    if not _adm(msg): return
+    text = (msg.text or "").strip()
+    if text.lower() in ("/cancel", "отмена"):
+        await msg.answer("❌ Рассылка отменена.")
+        await state.clear()
+        return
+    await state.clear()
+    await _do_broadcast(msg, text, bot)
+
+async def _do_broadcast(msg: Message, text: str, bot: Bot = None):
+    """Отправляет сообщение всем пользователям. bot передаётся при вызове из FSM."""
+    # Получаем bot из msg если не передан явно
+    _bot = bot or msg.bot
+    users = get_all_users()
+    sent = 0
+    failed = 0
+    broadcast_text = f"📢 *Новое обновление!*\n\n{text}"
+    for u in users:
+        try:
+            await _bot.send_message(u["user_id"], broadcast_text, parse_mode=MD)
+            sent += 1
+        except Exception:
+            failed += 1
+    await msg.answer(
+        f"✅ *Рассылка завершена*\n\n"
+        f"📤 Отправлено: *{sent}*\n"
+        f"❌ Не доставлено: *{failed}*",
+        parse_mode=MD
+    )
 
 # ================================================================
 #  ПЛАНИРОВЩИК
