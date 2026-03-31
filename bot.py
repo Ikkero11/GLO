@@ -456,7 +456,7 @@ APRIL_FOOLS_EXPRESS_RESULT = [
 
 def is_april_fools() -> bool:
     today = date.today()
-    return today.month == 4 and today.day == 1
+    return True
 
 def april_result_text(score: int, zone: str) -> str:
     if zone == "green":
