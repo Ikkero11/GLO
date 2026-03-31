@@ -1,11 +1,7 @@
 """
-bot.py — Анти-стресс_Clo v0.4.0
-Изменения v0.4.0:
-  - Добавлена команда /admin — показывает все админ-команды
-  - Обновлены вопросы опросов: одна тема, но разные формулировки
-  - Добавлена команда /broadcast — оповещение всех пользователей об обновлении
-  - Убрана информация об авторе и проекте из раздела «О боте»
-  - Добавлен раздел «Практики» с 5 техниками снижения стресса
+bot.py — Анти-стресс_Clo v0.4.1
+Изменения v0.4.1:
+  - 🃏 Режим 1 апреля: шуточные результаты опросов весь день 1 апреля
 
 На сервере рядом с bot.py:
   facts_day.txt, moon_photos/, morning_images/
@@ -38,7 +34,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 BOT_TOKEN  = os.getenv("BOT_TOKEN", "YOUR_TOKEN_HERE")
 ADMIN_ID   = 7498442456
-VERSION    = "0.4.0"
+VERSION    = "0.4.1"
 BOT_NAME   = "Анти-стресс_Clo"
 TIMEZONE   = "Europe/Moscow"
 MSK        = pytz.timezone(TIMEZONE)
@@ -434,6 +430,40 @@ def get_random_express_questions():
 RESULT_GREEN  = "🟢 *Зелёная зона — Баланс!*\n\nКрасавчик! Ты в хорошем состоянии сегодня 🙌\nСохраняй этот ритм — ты справляешься.\n\n_{score} баллов из 40_"
 RESULT_YELLOW = "🟡 *Жёлтая зона — Умеренный стресс*\n\nЧувствуется нагрузка, но ты держишься 💪\nПопробуй технику дыхания — 5 минут могут изменить вечер.\n\n_{score} баллов из 40_"
 RESULT_RED    = "🔴 *Красная зона — Высокий стресс*\n\nЗвучит тяжело. Это нормально — бывает.\nПопробуй прямо сейчас: 🧘 *Дыхательная гимнастика*.\nЕсли так несколько дней — поговори с кем-то, кому доверяешь.\n\n_{score} баллов из 40_"
+
+# 🃏 Шуточные результаты для 1 апреля
+APRIL_FOOLS_GREEN = [
+    "🟢 *{score} баллов из 40 — подозрительно хорошо*\n\nСерьёзно? Ты уверен, что честно отвечал? 🤨\nПроверяем данные... Ошибок не найдено. Придётся поверить.\n\nВыписываем справку «Самый спокойный человек района» 🏅",
+    "🟢 *{score} баллов — ты слишком спокоен*\n\nНаши учёные в панике. Такого результата не бывает.\nВозможно, ты робот. Или просто хорошо поспал 🤖\n\nОтправляем твои данные в Книгу рекордов Гиннесса 📖",
+    "🟢 *{score} баллов — это почти неприлично*\n\nТы что, только что с курорта? 🏖\nОстальные пользователи просят тебя немного понервничать — из солидарности.\n\nСпасибо за участие. Ты испортил нашу статистику 😤",
+]
+APRIL_FOOLS_YELLOW = [
+    "🟡 *{score} баллов — средненько*\n\nНи рыба, ни мясо. Ни стресс, ни спокойствие.\nТы как понедельник: все терпят, но никто не любит 🗓\n\nРекомендуем: выпить чай и подумать о жизни ☕",
+    "🟡 *{score} баллов — бот не удивлён*\n\nЗнаешь, мы ожидали большего. Или меньшего.\nВ общем — ожидали другого 🤷\n\nВыдаём медаль «Крепкий середнячок» 🥈",
+    "🟡 *{score} баллов — стресс есть, но он стесняется*\n\nТвой стресс сидит в углу и не хочет выходить.\nПосочувствуй ему. Или нет — это же стресс 😅\n\nСовет дня: притворись, что всё хорошо. Иногда помогает ✨",
+]
+APRIL_FOOLS_RED = [
+    "🔴 *{score} баллов — ой*\n\nЭто высокий балл. Очень высокий.\nЗвоню в местный дурдом — предупрежу, что едет пополнение 🚑\n\n*(шучу, ты молодец что прошёл опрос. Серьёзно — это уже шаг)*",
+    "🔴 *{score} баллов — рекорд сезона!*\n\nПоздравляем! Ты набрал столько стресса, что наш сервер почувствовал тревогу.\nОн тоже просит дыхательную гимнастику 🫁\n\nСовет: ляг на пол и полежи. Полы всегда поддержат 🛋",
+    "🔴 *{score} из 40 — выдающийся результат*\n\nТвой стресс уже написал автобиографию и ищет издателя 📚\nМы отправили ему отказ — от твоего имени.\n\nА ты — попробуй дыхание. Хотя бы ради смеха 🧘‍♂️",
+]
+
+APRIL_FOOLS_EXPRESS_RESULT = [
+    "⚡ *Экспресс-результат: {score} из 20*\n\nСредний балл: *{avg}*\n\n🃏 Наш главный аналитик (кот Василий) изучил данные и сказал: «Мяу».\nЧто означает — «иди попей воды». Умный кот.\n\n✨ *+10 очков* начислено! (Кот одобрил)",
+    "⚡ *Экспресс-результат: {score} из 20*\n\nСредний балл: *{avg}*\n\n🃏 Результат обработан нейросетью. Нейросеть растерялась и пошла в отпуск.\nПока она отдыхает — мы начисляем очки автоматически.\n\n✨ *+10 очков* начислено!",
+    "⚡ *Экспресс-результат: {score} из 20*\n\nСредний балл: *{avg}*\n\n🃏 По данным учёных (мы их выдумали), твой результат означает что ты человек.\nЭто хорошая новость. Роботы так не отвечают.\n\n✨ *+10 очков* начислено! Живи, человек 🤖",
+]
+
+def is_april_fools() -> bool:
+    today = date.today()
+    return today.month == 4 and today.day == 1
+
+def april_result_text(score: int, zone: str) -> str:
+    if zone == "green":
+        return random.choice(APRIL_FOOLS_GREEN).format(score=score)
+    if zone == "yellow":
+        return random.choice(APRIL_FOOLS_YELLOW).format(score=score)
+    return random.choice(APRIL_FOOLS_RED).format(score=score)
 POINTS_ADDED  = "\n\n✨ *+{pts} очков* начислено!"
 STREAK_BONUS  = "🔥 Серия {streak} дней подряд! Бонус *+10 очков*"
 
@@ -1012,7 +1042,11 @@ async def cb_main_q(call: CallbackQuery, state: FSMContext, bot: Bot):
     add_points(uid, POINTS_SURVEY)
     log_task(uid, "survey", POINTS_SURVEY)
 
-    text = res_text(score, zone) + POINTS_ADDED.format(pts=POINTS_SURVEY)
+    if is_april_fools():
+        result = april_result_text(score, zone)
+    else:
+        result = res_text(score, zone)
+    text = result + POINTS_ADDED.format(pts=POINTS_SURVEY)
     if streak > 1:
         add_points(uid, POINTS_STREAK_BONUS)
         text += "\n" + STREAK_BONUS.format(streak=streak)
@@ -1073,9 +1107,11 @@ async def cb_express_q(call: CallbackQuery, state: FSMContext):
     save_mood(uid, score, "yellow", "express", answers)
     add_points(uid, POINTS_EXPRESS)
     log_task(uid, "express", POINTS_EXPRESS)
-    await call.message.answer(
-        EXPRESS_RESULT.format(score=score, avg=avg, hint=expr_hint(score)), parse_mode=MD
-    )
+    if is_april_fools():
+        result_text = random.choice(APRIL_FOOLS_EXPRESS_RESULT).format(score=score, avg=avg)
+    else:
+        result_text = EXPRESS_RESULT.format(score=score, avg=avg, hint=expr_hint(score))
+    await call.message.answer(result_text, parse_mode=MD)
     await state.clear(); await call.answer()
 
 # ── Дыхание ───────────────────────────────────────────────────
@@ -1221,22 +1257,17 @@ async def cmd_admin_users(msg: Message):
     users = admin_all_users()
     if not users:
         await msg.answer("Нет пользователей."); return
-    
-    # Экранируем подчеркивания, чтобы Markdown не падал
     lines = [
-        f"`{u['user_id']}` @{str(u['username']).replace('_', '\\_') if u['username'] else '—'} | "
+        f"`{u['user_id']}` @{u['username'] or '—'} | "
         f"🏆{u['points']} | 🔥{u['streak']} | ⏰{u['survey_time']}"
         for u in users
     ]
-    
     buf = []
     for line in lines:
         buf.append(line)
-        # Если накопилось много текста, отправляем кусок
-        if len("\n".join(buf)) > 3500:
-            await msg.answer("\n".join(buf), parse_mode=MD)
-            buf = []
-    
+        if len("\n".join(buf)) > 3800:
+            await msg.answer("\n".join(buf[:-1]), parse_mode=MD)
+            buf = [buf[-1]]
     if buf:
         await msg.answer("\n".join(buf), parse_mode=MD)
 
